@@ -24,3 +24,27 @@ then
   echo "That is not an integer, guess again:"
   continue
 fi
+GUESSES=0
+while true
+do
+  read GUESS
+  if ! [[ $GUESS =~ ^[0-9]+$ ]]
+  then
+    echo "That is not an integer, guess again:"
+    continue
+  fi
+
+  GUESSES=$((GUESSES+1))
+
+  if [[ $GUESS -eq $SECRET_NUMBER ]]
+  then
+    echo "You guessed it in $GUESSES tries. The secret number was $SECRET_NUMBER. Nice job!"
+    $PSQL "INSERT INTO games(user_id, guesses) VALUES($USER_ID, $GUESSES)" > /dev/null
+    break
+  elif [[ $GUESS -gt $SECRET_NUMBER ]]
+  then
+    echo "It's lower than that, guess again:"
+  else
+    echo "It's higher than that, guess again:"
+  fi
+done
