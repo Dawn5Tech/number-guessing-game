@@ -19,3 +19,8 @@ else
   BEST_GAME=$($PSQL "SELECT MIN(guesses) FROM games WHERE user_id=$USER_ID")
   echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 fi
+if ! [[ $GUESS =~ ^[0-9]+$ ]]
+then
+  echo "That is not an integer, guess again:"
+  continue
+fi
